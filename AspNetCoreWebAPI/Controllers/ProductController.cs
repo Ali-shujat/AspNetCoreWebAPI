@@ -57,20 +57,27 @@ namespace AspNetCoreWebAPI.Controllers
 
         // POST: api/Product
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Product product)
         {
+            products.Add(product);
         }
 
         // PUT: api/Product/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Product product)
         {
+            var currentProduct = products.Where(p => p.Id == id);
+            products = products.Except(currentProduct).ToList();
+            products.Add(product);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var prod = products.Where(p => p.Id == id);
+            products = products.Except(prod).ToList();
+
         }
     }
 }
